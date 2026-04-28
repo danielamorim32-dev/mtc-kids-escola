@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Escala Mensal - MTC Kids</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #ff6b9d;
+            --secondary: #ffd93d;
+            --accent: #667eea;
+            --success: #1D9E75;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #fff5f8 0%, #e8f0fe 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1em;
+            opacity: 0.95;
+        }
+        
+        .logo-header {
+            max-width: 100px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .form-section {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-size: 0.95em;
+        }
+        
+        select, textarea {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.95em;
+            transition: border-color 0.3s;
+        }
+        
+        select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+            font-size: 1em;
+            line-height: 1.5;
+        }
+        
+        .info-box {
+            background: #e8f0fe;
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            color: #333;
+        }
+        
+        .info-box strong {
+            color: var(--accent);
+        }
+        
+        .nomes-preview {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            min-height: 60px;
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .nome-badge {
+            background: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        
+        .nomes-vazio {
+            color: #999;
+            font-style: italic;
+        }
+        
+        .buttons-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .btn-gerar {
+            background: linear-gradient(135deg, var(--success) 0%, var(--accent) 100%);
+            color: white;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .btn-gerar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(29, 158, 117, 0.3);
+        }
+        
+        .btn-limpar {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .btn-limpar:hover {
+            background: #ff5252;
+        }
+        
+        .resultado {
+            display: none;
+            margin-top: 40px;
+        }
+        
+        .resultado.ativo {
+            display: block;
+        }
+        
+        .resultado-titulo {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.8em;
+            color: var(--dark);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--secondary);
+        }
+        
+        .escala-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .dia-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .dia-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .dia-data {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+        
+        .dia-tipo {
+            font-size: 0.85em;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        
+        .profissional-nome {
+            background: var(--primary);
+            color: white;
+            padding: 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.95em;
+        }
+        
+        .profissional-nome:last-child {
+            margin-bottom: 0;
+        }
+        
+        .bercario-info {
+            background: var(--secondary);
+            color: var(--dark);
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            margin-top: 10px;
+        }
+        
+        .exportacao {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-export {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+        
+        .btn-export-txt {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-export-txt:hover {
+            background: #218838;
+        }
+        
+        .btn-export-copy {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn-export-copy:hover {
+            background: #0056b3;
+        }
+        
+        .btn-export-print {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-export-print:hover {
+            background: #5a6268;
+        }
+        
+        .mensagem-sucesso {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .mensagem-sucesso.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .sem-dados {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        
+        .sem-dados-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            .buttons-group, .exportacao {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.6em;
+            }
+            
+            .escala-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="logo-ministerio.png" alt="MTC Kids" class="logo-header">
+            <h1>📅 Gerador de Escala Mensal</h1>
+            <p>Crie sua escala de forma automática e rápida</p>
+        </div>
+        
+        <div class="content">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('gerenciamento')">⚙️ Gerenciamento</button>
+                <button class="tab-btn" onclick="switchTab('escalas')">📅 Minhas Escalas</button>
+            </div>
+            
+            <!-- ABA 1: GERENCIAMENTO -->
+            <div id="gerenciamento" class="tab-content active">
+            <!-- FORMULÁRIO -->
+            <div class="form-section">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sala">🏠 Qual é sua Sala?</label>
+                        <select id="sala">
+                            <option value="">Selecione a sala...</option>
+                            <option value="bercario">🍼 Berçário (até 2 anos e 8 meses) - 2 PROFISSIONAIS</option>
+                            <option value="maternal">👶 Maternal (3 e 4 anos)</option>
+                            <option value="jardim">🌱 Jardim (5, 6 e 7 anos)</option>
+                            <option value="juniores">🎯 Juniores (8, 9 e 10 anos)</option>
+                            <option value="preadolescente">🎪 Pré-adolescente (11 e 12 anos)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mes">📆 Qual Mês?</label>
+                        <select id="mes">
+                            <option value="">Selecione o mês...</option>
+                            <option value="0">Janeiro 2026</option>
+                            <option value="1">Fevereiro 2026</option>
+                            <option value="2">Março 2026</option>
+                            <option value="3" selected>Abril 2026</option>
+                            <option value="4">Maio 2026</option>
+                            <option value="5">Junho 2026</option>
+                            <option value="6">Julho 2026</option>
+                            <option value="7">Agosto 2026</option>
+                            <option value="8">Setembro 2026</option>
+                            <option value="9">Outubro 2026</option>
+                            <option value="10">Novembro 2026</option>
+                            <option value="11">Dezembro 2026</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="coordenador">👤 Seu Nome (Coordenador)</label>
+                        <input type="text" id="coordenador" placeholder="Digite seu nome..." maxlength="50">
+                    </div>
+                </div>
+                
+                <div class="form-row full">
+                    <div class="form-group">
+                        <div class="info-box" id="infoBox">
+                            <strong>ℹ️ Digite os nomes dos profissionais</strong> da sua sala abaixo. Um nome por linha, e a escala será gerada automaticamente para os domingos e quartas do mês selecionado.
+                        </div>
+                        <label for="nomes">👥 Nomes dos Profissionais</label>
+                        <textarea id="nomes" placeholder="Ana Sophia&#10;Alian&#10;Matheus&#10;Marcelo Sorriso&#10;Rui&#10;Daniel&#10;...adicione quantos nomes quiser!"></textarea>
+                        
+                        <div style="margin-top: 15px;">
+                            <label>📌 Profissionais que você adicionou (<span id="contagem">0</span>):</label>
+                            <div class="nomes-preview" id="nomesPreview">
+                                <span class="nomes-vazio">Adicione nomes acima...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="rotacao">🔄 Tipo de Rotação</label>
+                        <select id="rotacao">
+                            <option value="sequencial" selected>Sequencial (um após o outro)</option>
+                            <option value="alternado">Alternado (intercalado)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="incluirFeriados">🎉 Comportamento com Feriados</label>
+                        <select id="incluirFeriados">
+                            <option value="incluir" selected>Incluir todos os domingos/quartas</option>
+                            <option value="marcar">Marcar como feriado</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="buttons-group">
+                    <button class="btn btn-gerar" onclick="gerarEscala()">🚀 Gerar Escala</button>
+                    <button class="btn btn-limpar" onclick="limparFormulario()">🔄 Limpar Tudo</button>
+                </div>
+            </div>
+            
+            <!-- ABA 2: MINHAS ESCALAS -->
+            <div id="escalas" class="tab-content">
+                <div class="form-section">
+                    <h2 style="margin-top: 0; color: var(--dark); border-bottom: 3px solid var(--secondary); padding-bottom: 15px;">📚 Minhas Escalas Salvas</h2>
+                    
+                    <div id="escalasLista" style="display: none;">
+                        <div id="escalasContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px;"></div>
+                        
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                            <button class="btn btn-gerar" style="background: #ff6b6b;" onclick="limparTodasEscalas()">🗑️ Limpar Todas</button>
+                        </div>
+                    </div>
+                    
+                    <div id="escalasVazio" class="empty-state" style="padding: 60px 20px;">
+                        <div class="empty-state-icon">📭</div>
+                        <p><strong>Nenhuma escala salva ainda</strong></p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">Gere uma escala na aba "Gerenciamento" e clique em "Deslocar para Minhas Escalas" para salvá-la aqui.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- RESULTADO DA GERAÇÃO -->
+            <div class="resultado" id="resultado">
+                <div class="mensagem-sucesso" id="msgSucesso">
+                    ✅ Escala gerada com sucesso! Você pode salvar, copiar ou imprimir.
+                </div>
+                
+                <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--primary);">
+                    <div class="resultado-titulo" id="tituloResultado"></div>
+                    <div id="metadadosResultado" style="font-size: 0.95em; color: #666; margin-top: 15px;"></div>
+                </div>
+                
+                <div style="background: #f0f7ff; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--accent);">
+                    <strong>📊 Resumo da Escala:</strong>
+                    <div id="resumoEscala" style="margin-top: 10px; font-size: 0.95em;"></div>
+                </div>
+                
+                <div id="conteudoEscala"></div>
+                
+                <div class="exportacao">
+                    <button class="btn-export btn-export-txt" onclick="exportarTxt()">💾 Salvar como Texto</button>
+                    <button class="btn-export btn-export-copy" onclick="copiarEscala()">📋 Copiar para Compartilhar</button>
+                    <button class="btn-export btn-export-print" onclick="window.print()">🖨️ Imprimir</button>
+                    <button class="btn-export" style="background: #6f42c1; color: white;" onclick="compartilharWhatsApp()">📱 Compartilhar WhatsApp</button>
+                    <button class="btn-export" style="background: #28a745; color: white;" onclick="deslocarParaMinhasEscalas()">➡️ Deslocar para Minhas Escalas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Configuração das salas
+        const configSalas = {
+            bercario: { nome: 'Berçário', icon: '🍼', faixa: 'até 2 anos e 8 meses', profissionaisPorDia: 2, dias: ['domingo'] },
+            maternal: { nome: 'Maternal', icon: '👶', faixa: '3 e 4 anos', profissionaisPorDia: 1, dias: ['domingo'] },
+            jardim: { nome: 'Jardim', icon: '🌱', faixa: '5, 6 e 7 anos', profissionaisPorDia: 1, dias: ['domingo'] },
+            juniores: { nome: 'Juniores', icon: '🎯', faixa: '8, 9 e 10 anos', profissionaisPorDia: 1, dias: ['domingo', 'quarta'] },
+            preadolescente: { nome: 'Pré-adolescente', icon: '🎪', faixa: '11 e 12 anos', profissionaisPorDia: 1, dias: ['domingo'] }
+        };
+        
+        const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+                            'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+        
+        // Atualizar prévia de nomes
+        document.getElementById('nomes').addEventListener('input', function() {
+            const nomes = this.value
+                .split('\n')
+                .map(n => n.trim())
+                .filter(n => n.length > 0);
+            
+            const preview = document.getElementById('nomesPreview');
+            const contagem = document.getElementById('contagem');
+            
+            contagem.textContent = nomes.length;
+            
+            if (nomes.length === 0) {
+                preview.innerHTML = '<span class="nomes-vazio">Adicione nomes acima...</span>';
+                return;
+            }
+            
+            preview.innerHTML = nomes.map(nome => `<span class="nome-badge">${nome}</span>`).join('');
+        });
+        
+        // Atualizar info da sala
+        document.getElementById('sala').addEventListener('change', function() {
+            const infoBox = document.getElementById('infoBox');
+            if (this.value) {
+                const config = configSalas[this.value];
+                const dias = config.dias.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(' e ');
+                const prof = config.profissionaisPorDia === 2 ? '⭐ 2 profissionais' : '1 profissional';
+                
+                infoBox.innerHTML = `<strong>ℹ️ ${config.nome} (${config.faixa})</strong><br>
+                📅 Funciona: ${dias}<br>
+                👥 Necessário: ${prof}`;
+            }
+        });
+        
+        // Gerar escala
+        function gerarEscala() {
+            try {
+                const sala = document.getElementById('sala').value.trim();
+                const mesValue = document.getElementById('mes').value.trim();
+                const nomesTexto = document.getElementById('nomes').value.trim();
+                const coordenador = document.getElementById('coordenador').value.trim();
+                const tipoRotacao = document.getElementById('rotacao').value;
+                
+                console.log('Sala:', sala, 'Mês:', mesValue, 'Nomes:', nomesTexto);
+                
+                // Validações
+                if (!sala) {
+                    alert('❌ Selecione uma sala!');
+                    document.getElementById('sala').focus();
+                    return;
+                }
+                
+                if (!mesValue || mesValue === '') {
+                    alert('❌ Selecione um mês!');
+                    document.getElementById('mes').focus();
+                    return;
+                }
+                
+                const mes = parseInt(mesValue);
+                if (isNaN(mes) || mes < 0 || mes > 11) {
+                    alert('❌ Mês inválido!');
+                    return;
+                }
+                
+                if (!nomesTexto) {
+                    alert('❌ Digite pelo menos um nome!');
+                    document.getElementById('nomes').focus();
+                    return;
+                }
+                
+                const nomes = nomesTexto
+                    .split('\n')
+                    .map(n => n.trim())
+                    .filter(n => n.length > 0);
+                
+                console.log('Nomes processados:', nomes);
+                
+                if (nomes.length === 0) {
+                    alert('❌ Digite pelo menos um nome!');
+                    document.getElementById('nomes').focus();
+                    return;
+                }
+                
+                const config = configSalas[sala];
+                
+                if (!config) {
+                    alert('❌ Sala inválida!');
+                    return;
+                }
+                
+                // Validar quantidade de profissionais
+                if (config.profissionaisPorDia === 2 && nomes.length < 2) {
+                    alert('❌ Para o Berçário, você precisa de pelo menos 2 profissionais!');
+                    return;
+                }
+                
+                // Gerar escala
+                const ano = 2026;
+                const escala = [];
+                let indiceDomingo = 0;
+                let indiceQuarta = 0;
+                
+                // Obter último dia do mês
+                const ultimoDia = new Date(ano, mes + 1, 0).getDate();
+                
+                for (let dia = 1; dia <= ultimoDia; dia++) {
+                    const data = new Date(ano, mes, dia);
+                    const diaSemana = data.getDay();
+                    
+                    // Verificar se este dia está configurado para esta sala
+                    const temDomingo = config.dias.includes('domingo');
+                    const temQuarta = config.dias.includes('quarta');
+                    
+                    if (diaSemana === 0 && temDomingo) { // Domingo
+                        const profissionais = [];
+                        for (let i = 0; i < config.profissionaisPorDia; i++) {
+                            profissionais.push(nomes[indiceDomingo % nomes.length]);
+                            indiceDomingo++;
+                        }
+                        
+                        escala.push({
+                            data: data,
+                            profissionais: profissionais,
+                            tipo: 'Domingo'
+                        });
+                    } else if (diaSemana === 3 && temQuarta) { // Quarta
+                        const profissionais = [];
+                        for (let i = 0; i < config.profissionaisPorDia; i++) {
+                            profissionais.push(nomes[indiceQuarta % nomes.length]);
+                            indiceQuarta++;
+                        }
+                        
+                        escala.push({
+                            data: data,
+                            profissionais: profissionais,
+                            tipo: 'Quarta'
+                        });
+                    }
+                }
+                
+                console.log('Escala gerada com', escala.length, 'dias');
+                
+                if (escala.length === 0) {
+                    alert('⚠️ Nenhum domingo ou quarta encontrado para esta sala neste mês!');
+                    return;
+                }
+                
+                // Exibir resultado
+                exibirResultado(escala, sala, mes, nomes, coordenador, tipoRotacao);
+                
+            } catch (erro) {
+                console.error('Erro ao gerar escala:', erro);
+                alert('❌ Erro ao gerar escala. Verifique o console para detalhes.');
+            }
+        }
+        
+        // Exibir resultado
+        function exibirResultado(escala, sala, mes, nomes, coordenador, tipoRotacao) {
+            const config = configSalas[sala];
+            const resultado = document.getElementById('resultado');
+            const titulo = document.getElementById('tituloResultado');
+            const metadadosDiv = document.getElementById('metadadosResultado');
+            const resumoDiv = document.getElementById('resumoEscala');
+            const conteudo = document.getElementById('conteudoEscala');
+            
+            titulo.innerHTML = `${config.icon} ${config.nome} - ${nomesMeses[mes]} 2026`;
+            
+            // Metadados
+            const diasFuncionamento = config.dias.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(' e ');
+            let metadadosHtml = `<p>🏠 <strong>Sala:</strong> ${config.nome}</p>`;
+            metadadosHtml += `<p>👶 <strong>Faixa Etária:</strong> ${config.faixa}</p>`;
+            metadadosHtml += `<p>📅 <strong>Dias de Funcionamento:</strong> ${diasFuncionamento}</p>`;
+            metadadosHtml += `<p>📆 <strong>Mês:</strong> ${nomesMeses[mes]} 2026</p>`;
+            metadadosHtml += `<p>👥 <strong>Profissionais:</strong> ${nomes.join(', ')}</p>`;
+            if (coordenador) {
+                metadadosHtml += `<p>👤 <strong>Coordenador:</strong> ${coordenador}</p>`;
+            }
+            metadadosHtml += `<p>🔄 <strong>Tipo de Rotação:</strong> ${tipoRotacao === 'sequencial' ? 'Sequencial' : 'Alternado'}</p>`;
+            metadadosDiv.innerHTML = metadadosHtml;
+            
+            // Resumo
+            const domingosPorProf = {};
+            const quartasPorProf = {};
+            let totalDomingos = 0;
+            let totalQuartas = 0;
+            
+            escala.forEach(item => {
+                item.profissionais.forEach(prof => {
+                    if (item.tipo === 'Domingo') {
+                        domingosPorProf[prof] = (domingosPorProf[prof] || 0) + 1;
+                        totalDomingos++;
+                    } else {
+                        quartasPorProf[prof] = (quartasPorProf[prof] || 0) + 1;
+                        totalQuartas++;
+                    }
+                });
+            });
+            
+            let resumoHtml = `<strong>📊 Total de dias:</strong> ${escala.length}`;
+            if (totalDomingos > 0) resumoHtml += ` (${totalDomingos} domingo${totalDomingos > 1 ? 's' : ''})`;
+            if (totalQuartas > 0) resumoHtml += ` + ${totalQuartas} quarta${totalQuartas > 1 ? 's' : ''}`;
+            resumoHtml += `<br><br><strong>👥 Distribuição por profissional:</strong><br>`;
+            
+            nomes.forEach(prof => {
+                const totalDomingos = domingosPorProf[prof] || 0;
+                const totalQuartas = quartasPorProf[prof] || 0;
+                const total = totalDomingos + totalQuartas;
+                
+                let distribuicao = `• <strong>${prof}</strong>: `;
+                if (totalDomingos > 0) distribuicao += `${totalDomingos} domingo${totalDomingos > 1 ? 's' : ''}`;
+                if (totalQuartas > 0) {
+                    if (totalDomingos > 0) distribuicao += ` + `;
+                    distribuicao += `${totalQuartas} quarta${totalQuartas > 1 ? 's' : ''}`;
+                }
+                distribuicao += ` = ${total} dia${total > 1 ? 's' : ''}<br>`;
+                
+                resumoHtml += distribuicao;
+            });
+            
+            resumoDiv.innerHTML = resumoHtml;
+            
+            let html = `<div class="escala-grid">`;
+            
+            if (escala.length === 0) {
+                html = '<div class="sem-dados"><p>Nenhum domingo ou quarta encontrado para este mês.</p></div>';
+            } else {
+                escala.forEach((item, index) => {
+                    const dataFormatada = item.data.toLocaleDateString('pt-BR', { 
+                        weekday: 'long', 
+                        day: '2-digit', 
+                        month: 'long',
+                        year: '2-digit'
+                    });
+                    
+                    let profHtml = item.profissionais
+                        .map(prof => `<div class="profissional-nome">${prof}</div>`)
+                        .join('');
+                    
+                    let bercarioInfo = '';
+                    if (config.profissionaisPorDia === 2) {
+                        bercarioInfo = '<div class="bercario-info">⭐ 2 profissionais</div>';
+                    }
+                    
+                    html += `
+                        <div class="dia-card">
+                            <div style="font-size: 0.85em; color: #999; margin-bottom: 8px;">#${index + 1}</div>
+                            <div class="dia-data">${dataFormatada}</div>
+                            <div class="dia-tipo">${item.tipo}</div>
+                            ${profHtml}
+                            ${bercarioInfo}
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            }
+            
+            conteudo.innerHTML = html;
+            resultado.classList.add('ativo');
+            resultado.style.display = 'block';
+            
+            // Mostrar mensagem de sucesso
+            const msg = document.getElementById('msgSucesso');
+            msg.classList.add('show');
+            setTimeout(() => msg.classList.remove('show'), 4000);
+            
+            // Scroll para resultado
+            setTimeout(() => {
+                resultado.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+            
+            // Guardar dados para exportação
+            window.escalaAtual = {
+                escala: escala,
+                sala: sala,
+                mes: mes,
+                nomes: nomes,
+                coordenador: coordenador,
+                config: config,
+                nomesMeses: nomesMeses
+            };
+        }
+        
+        // Exportar como texto
+        function exportarTxt() {
+            if (!window.escalaAtual) return;
+            
+            const { escala, sala, mes, nomes, coordenador, config, nomesMeses } = window.escalaAtual;
+            
+            let texto = `╔════════════════════════════════════════════════════════════╗\n`;
+            texto += `║           📅 ESCALA MENSAL - MTC KIDS 2026                   ║\n`;
+            texto += `╚════════════════════════════════════════════════════════════╝\n\n`;
+            
+            texto += `${config.icon} SALA: ${config.nome.toUpperCase()}\n`;
+            texto += `👶 FAIXA ETÁRIA: ${config.faixa}\n`;
+            texto += `📅 DIAS: ${config.dias.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(' e ')}\n`;
+            texto += `📆 MÊS: ${nomesMeses[mes]}\n`;
+            if (coordenador) {
+                texto += `👤 COORDENADOR: ${coordenador}\n`;
+            }
+            texto += `👥 PROFISSIONAIS: ${nomes.join(', ')}\n`;
+            
+            texto += `\n${'═'.repeat(60)}\n`;
+            texto += `PROFISSIONAIS ESCALADOS:\n`;
+            texto += `${'─'.repeat(60)}\n`;
+            
+            nomes.forEach((prof, index) => {
+                texto += `${index + 1}. ${prof}\n`;
+            });
+            
+            texto += `\n${'═'.repeat(60)}\n`;
+            texto += `ESCALA DETALHADA:\n`;
+            texto += `${'═'.repeat(60)}\n\n`;
+            
+            let ultimoTipo = null;
+            escala.forEach((item, index) => {
+                if (item.tipo !== ultimoTipo) {
+                    ultimoTipo = item.tipo;
+                    texto += `\n${'─'.repeat(60)}\n`;
+                    texto += `${item.tipo.toUpperCase()}S\n`;
+                    texto += `${'─'.repeat(60)}\n`;
+                }
+                
+                const dataFormatada = item.data.toLocaleDateString('pt-BR', { 
+                    weekday: 'long', 
+                    day: '2-digit', 
+                    month: 'long',
+                    year: 'numeric'
+                });
+                
+                texto += `\n${index + 1}. ${dataFormatada}\n`;
+                item.profissionais.forEach(prof => {
+                    texto += `   ✓ ${prof}\n`;
+                });
+            });
+            
+            // Resumo de distribuição
+            const domingosPorProf = {};
+            const quartasPorProf = {};
+            
+            escala.forEach(item => {
+                item.profissionais.forEach(prof => {
+                    if (item.tipo === 'Domingo') {
+                        domingosPorProf[prof] = (domingosPorProf[prof] || 0) + 1;
+                    } else {
+                        quartasPorProf[prof] = (quartasPorProf[prof] || 0) + 1;
+                    }
+                });
+            });
+            
+            texto += `\n\n${'═'.repeat(60)}\n`;
+            texto += `RESUMO POR PROFISSIONAL:\n`;
+            texto += `${'═'.repeat(60)}\n`;
+            
+            nomes.forEach(prof => {
+                const totalDomingos = domingosPorProf[prof] || 0;
+                const totalQuartas = quartasPorProf[prof] || 0;
+                const total = totalDomingos + totalQuartas;
+                texto += `${prof}:\n`;
+                texto += `  • Domingos: ${totalDomingos}\n`;
+                texto += `  • Quartas: ${totalQuartas}\n`;
+                texto += `  • Total: ${total} dias\n\n`;
+            });
+            
+            texto += `\n${'═'.repeat(60)}\n`;
+            texto += `Gerado em: ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}\n`;
+            texto += `Sistema: Gerador de Escala MTC Kids\n`;
+            texto += `${'═'.repeat(60)}\n`;
+            
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(texto));
+            element.setAttribute('download', `escala_${sala}_${nomesMeses[mes]}_2026.txt`);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+        
+        // Copiar escala
+        function copiarEscala() {
+            if (!window.escalaAtual) return;
+            
+            const { escala, sala, mes, nomes } = window.escalaAtual;
+            const config = configSalas[sala];
+            
+            let texto = `🎨 ESCALA ${config.nome.toUpperCase()} - ${nomesMeses[mes]}\n\n`;
+            
+            escala.forEach(item => {
+                const dataFormatada = item.data.toLocaleDateString('pt-BR', { 
+                    weekday: 'short', 
+                    day: '2-digit', 
+                    month: '2-digit'
+                });
+                
+                texto += `${item.tipo} (${dataFormatada}): ${item.profissionais.join(' + ')}\n`;
+            });
+            
+            navigator.clipboard.writeText(texto).then(() => {
+                alert('✅ Escala copiada! Cole em qualquer lugar.');
+            });
+        }
+        
+        // Compartilhar WhatsApp
+        function compartilharWhatsApp() {
+            if (!window.escalaAtual) return;
+            
+            const { escala, sala, mes, nomes, config, nomesMeses } = window.escalaAtual;
+            
+            let texto = `*📅 ESCALA ${config.icon} ${config.nome.toUpperCase()}*\n\n`;
+            texto += `*Mês:* ${nomesMeses[mes]} 2026\n`;
+            texto += `*Profissionais:* ${nomes.join(', ')}\n\n`;
+            
+            escala.forEach((item, index) => {
+                const dataFormatada = item.data.toLocaleDateString('pt-BR', { 
+                    weekday: 'short', 
+                    day: '2-digit', 
+                    month: '2-digit'
+                });
+                
+                texto += `${index + 1}. *${item.tipo}* (${dataFormatada})\n   → ${item.profissionais.join(' + ')}\n`;
+            });
+            
+            // Codificar para WhatsApp
+            const mensagemCodificada = encodeURIComponent(texto);
+            const url = `https://wa.me/?text=${mensagemCodificada}`;
+            
+            window.open(url, '_blank');
+        }
+        
+        // ============ GERENCIAMENTO DE ESCALAS SALVAS ============
+        
+        // Função para trocar de aba
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // Se for para aba de escalas, atualizar lista
+            if (tabName === 'escalas') {
+                atualizarListaEscalas();
+            }
+        }
+        
+        // Array para armazenar escalas
+        let escaladosSalvos = JSON.parse(localStorage.getItem('escaladosMTC')) || [];
+        
+        // Deslocar escala para Minhas Escalas
+        function deslocarParaMinhasEscalas() {
+            if (!window.escalaAtual) {
+                alert('Nenhuma escala gerada!');
+                return;
+            }
+            
+            const { escala, sala, mes, nomes, coordenador, config, nomesMeses } = window.escalaAtual;
+            
+            const id = Date.now();
+            const novaEscala = {
+                id: id,
+                sala: sala,
+                mes: mes,
+                nomes: nomes,
+                coordenador: coordenador,
+                config: config,
+                nomesMeses: nomesMeses,
+                escala: escala,
+                dataCriacao: new Date().toLocaleString('pt-BR')
+            };
+            
+            escaladosSalvos.push(novaEscala);
+            localStorage.setItem('escaladosMTC', JSON.stringify(escaladosSalvos));
+            
+            alert('✅ Escala deslocada para "Minhas Escalas"!');
+            
+            // Ir para aba de escalas
+            setTimeout(() => {
+                const btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.textContent.includes('Minhas Escalas'));
+                if (btn) btn.click();
+            }, 500);
+        }
+        
+        // Atualizar lista de escalas
+        function atualizarListaEscalas() {
+            const container = document.getElementById('escalasContainer');
+            const listaDiv = document.getElementById('escalasLista');
+            const vazioDiv = document.getElementById('escalasVazio');
+            
+            if (escaladosSalvos.length === 0) {
+                listaDiv.style.display = 'none';
+                vazioDiv.style.display = 'block';
+                return;
+            }
+            
+            listaDiv.style.display = 'block';
+            vazioDiv.style.display = 'none';
+            
+            container.innerHTML = '';
+            
+            escaladosSalvos.forEach((escalaItem) => {
+                const card = document.createElement('div');
+                card.style.cssText = `
+                    background: white;
+                    border: 2px solid #ddd;
+                    border-left: 4px solid;
+                    border-radius: 8px;
+                    padding: 20px;
+                    transition: all 0.3s;
+                `;
+                
+                const corBorda = {
+                    bercario: '#00bcd4',
+                    maternal: '#ff6b9d',
+                    jardim: '#ffd93d',
+                    juniores: '#667eea',
+                    preadolescente: '#1D9E75'
+                }[escalaItem.sala] || '#667eea';
+                
+                card.style.borderLeftColor = corBorda;
+                
+                card.onmouseover = () => card.style.transform = 'translateY(-4px)';
+                card.onmouseout = () => card.style.transform = 'translateY(0)';
+                
+                const diasFuncionamento = escalaItem.config.dias
+                    .map(d => d.charAt(0).toUpperCase() + d.slice(1))
+                    .join(' e ');
+                
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                        <div>
+                            <h3 style="margin: 0 0 5px 0; color: var(--dark);">
+                                ${escalaItem.config.icon} ${escalaItem.config.nome}
+                            </h3>
+                            <p style="margin: 0; color: #999; font-size: 0.9em;">
+                                ${escalaItem.nomesMeses[escalaItem.mes]} 2026
+                            </p>
+                        </div>
+                        <button onclick="removerEscala(${escalaItem.id})" style="
+                            background: #ff6b6b;
+                            color: white;
+                            border: none;
+                            padding: 6px 10px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            font-size: 0.85em;
+                        ">✕ Remover</button>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 0.9em;">
+                        <p style="margin: 0 0 8px 0;"><strong>📅 Dias:</strong> ${diasFuncionamento}</p>
+                        <p style="margin: 0 0 8px 0;"><strong>👥 Profissionais:</strong> ${escalaItem.nomes.join(', ')}</p>
+                        ${escalaItem.coordenador ? `<p style="margin: 0;"><strong>👤 Coordenador:</strong> ${escalaItem.coordenador}</p>` : ''}
+                    </div>
+                    
+                    <p style="margin: 0 0 15px 0; color: #999; font-size: 0.85em;">
+                        📍 Salvo em: ${escalaItem.dataCriacao}
+                    </p>
+                    
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="abrirEscala(${escalaItem.id})" style="
+                            flex: 1;
+                            background: var(--primary);
+                            color: white;
+                            border: none;
+                            padding: 10px;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-weight: 600;
+                        ">👁️ Visualizar</button>
+                        <button onclick="exportarEscalaSalva(${escalaItem.id})" style="
+                            flex: 1;
+                            background: #28a745;
+                            color: white;
+                            border: none;
+                            padding: 10px;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-weight: 600;
+                        ">💾 Exportar</button>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+        
+        // Remover escala
+        function removerEscala(id) {
+            if (confirm('Tem certeza que deseja remover esta escala?')) {
+                escaladosSalvos = escaladosSalvos.filter(e => e.id !== id);
+                localStorage.setItem('escaladosMTC', JSON.stringify(escaladosSalvos));
+                atualizarListaEscalas();
+            }
+        }
+        
+        // Limpar todas as escalas
+        function limparTodasEscalas() {
+            if (confirm('Tem certeza? Isso vai DELETAR todas as escalas salvas!')) {
+                escaladosSalvos = [];
+                localStorage.setItem('escaladosMTC', JSON.stringify(escaladosSalvos));
+                atualizarListaEscalas();
+            }
+        }
+        
+        // Abrir/visualizar escala salva
+        function abrirEscala(id) {
+            const escalaItem = escaladosSalvos.find(e => e.id === id);
+            if (!escalaItem) return;
+            
+            window.escalaAtual = escalaItem;
+            
+            // Ir para gerenciamento
+            const btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.textContent.includes('Gerenciamento'));
+            if (btn) btn.click();
+            
+            // Exibir resultado
+            setTimeout(() => {
+                const resultado = document.getElementById('resultado');
+                resultado.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+        }
+        
+        // Exportar escala salva
+        function exportarEscalaSalva(id) {
+            const escalaItem = escaladosSalvos.find(e => e.id === id);
+            if (!escalaItem) return;
+            
+            window.escalaAtual = escalaItem;
+            exportarTxt();
+        }
+        
+        // Limpar formulário
+        function limparFormulario() {
+            document.getElementById('sala').value = '';
+            document.getElementById('mes').value = '3';
+            document.getElementById('nomes').value = '';
+            document.getElementById('coordenador').value = '';
+            document.getElementById('nomesPreview').innerHTML = '<span class="nomes-vazio">Adicione nomes acima...</span>';
+            document.getElementById('contagem').textContent = '0';
+            document.getElementById('resultado').classList.remove('ativo');
+            document.getElementById('infoBox').innerHTML = '<strong>ℹ️ Digite os nomes dos profissionais</strong> da sua sala abaixo. Um nome por linha, e a escala será gerada automaticamente para os domingos e quartas do mês selecionado.';
+        }
+        
+        // Função para teste rápido (execute no console: testarEscala())
+        window.testarEscala = function() {
+            document.getElementById('sala').value = 'maternal';
+            document.getElementById('mes').value = '3';
+            document.getElementById('nomes').value = 'Ana Sophia\nAlian\nMatheus';
+            document.getElementById('coordenador').value = 'Maria';
+            console.log('✅ Teste preparado! Execute: gerarEscala()');
+            setTimeout(gerarEscala, 500);
+        };
+        
+        console.log('✅ Sistema carregado! Abra o DevTools (F12) se tiver problemas.');
+    </script>
+</body>
+</html>
