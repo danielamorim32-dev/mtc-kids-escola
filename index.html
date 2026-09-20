@@ -3,281 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>MTC Kids - Escala Mensal</title>
+<title>MTC Kids - Escala Premium</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-:root{
-  --pink:#ff6b9d;
-  --yellow:#ffd93d;
-  --blue:#667eea;
-  --cyan:#00bcd4;
-  --green:#1D9E75;
-  --orange:#ff8c42;
-  --purple:#9c27b0;
-  --dark:#2c3e50;
-  --light:#f8f9fa;
-}
-body{
-  font-family:'Nunito',sans-serif;
-  background:#f0f4ff;
-  min-height:100vh;
-  overflow-x:hidden;
-}
-
-/* ---- HEADER ---- */
-.header{
-  background:linear-gradient(135deg,#ff6b9d 0%,#ffd93d 40%,#667eea 80%,#00bcd4 100%);
-  padding:30px 20px 50px;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-}
-.header::before{
-  content:'';position:absolute;top:-30px;left:-30px;right:-30px;bottom:-30px;
-  background:radial-gradient(circle at 20% 50%,rgba(255,255,255,.15) 0%,transparent 60%),
-             radial-gradient(circle at 80% 20%,rgba(255,255,255,.1) 0%,transparent 60%);
-}
-.bubble{
-  position:absolute;border-radius:50%;opacity:.25;animation:bbl 4s ease-in-out infinite;
-}
-.bubble:nth-child(1){width:80px;height:80px;background:#fff;top:10%;left:5%;animation-delay:0s;}
-.bubble:nth-child(2){width:50px;height:50px;background:#ffd93d;top:60%;left:85%;animation-delay:1s;}
-.bubble:nth-child(3){width:65px;height:65px;background:#fff;top:30%;right:8%;animation-delay:2s;}
-.bubble:nth-child(4){width:40px;height:40px;background:#ff6b9d;bottom:20%;left:15%;animation-delay:1.5s;}
-@keyframes bbl{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-15px) scale(1.05);}}
-
-.header-logo{max-width:90px;margin-bottom:15px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2));position:relative;z-index:1;}
-.header h1{
-  font-size:clamp(1.6em,5vw,2.4em);font-weight:900;color:#fff;
-  text-shadow:0 3px 10px rgba(0,0,0,.2);position:relative;z-index:1;margin-bottom:8px;
-}
-.header p{color:rgba(255,255,255,.95);font-size:clamp(.9em,3vw,1.1em);position:relative;z-index:1;}
-
-/* ---- TABS ---- */
-.tab-nav{
-  display:flex;background:#fff;border-bottom:3px solid #eee;position:sticky;top:0;z-index:100;
-  box-shadow:0 2px 10px rgba(0,0,0,.08);
-}
-.tab-btn{
-  flex:1;padding:16px 8px;border:none;background:transparent;font-family:'Nunito',sans-serif;
-  font-weight:700;font-size:clamp(.8em,3vw,.95em);color:#999;cursor:pointer;
-  border-bottom:3px solid transparent;transition:all .3s;position:relative;bottom:-3px;
-}
-.tab-btn.active{color:var(--pink);border-bottom-color:var(--pink);}
-.tab-btn:active{opacity:.7;}
-
-/* ---- WAVES ---- */
-.wave{
-  display:block;margin-top:-2px;
-}
-
-/* ---- CONTENT ---- */
-.page{display:none;padding:20px;animation:fadeUp .4s ease;}
+:root{--pink:#ff6b9d;--blue:#667eea;--green:#1D9E75;--dark:#2c3e50;}
+body{font-family:'Nunito',sans-serif;background:#f0f4ff;min-height:100vh;}
+.header{background:linear-gradient(135deg,#ff6b9d 0%,#ffd93d 40%,#667eea 80%,#00bcd4 100%);padding:30px 20px;text-align:center;position:relative;}
+.header h1{font-size:2em;font-weight:900;color:#fff;margin-bottom:8px;}
+.header p{color:rgba(255,255,255,.95);font-size:1em;}
+.tab-nav{display:flex;background:#fff;border-bottom:3px solid #eee;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.08);}
+.tab-btn{flex:1;padding:16px;border:none;background:transparent;font-weight:700;color:#999;cursor:pointer;border-bottom:3px solid transparent;}
+.tab-btn.active{color:#ff6b9d;border-bottom-color:#ff6b9d;}
+.page{display:none;padding:24px 20px;max-width:1200px;margin:0 auto;}
 .page.active{display:block;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-
-/* ---- CARDS ---- */
-.card{
-  background:#fff;border-radius:20px;padding:20px;margin-bottom:20px;
-  box-shadow:0 4px 20px rgba(0,0,0,.06);
-}
-.card-header{
-  display:flex;align-items:center;gap:12px;margin-bottom:20px;
-}
-.card-icon{
-  width:48px;height:48px;border-radius:14px;display:flex;align-items:center;
-  justify-content:center;font-size:1.5em;flex-shrink:0;
-}
+.card{background:#fff;border-radius:20px;padding:28px;margin-bottom:24px;box-shadow:0 4px 24px rgba(0,0,0,.08);}
+.card-header{display:flex;gap:12px;margin-bottom:20px;}
+.card-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5em;}
 .card-title{font-size:1.1em;font-weight:800;color:var(--dark);}
-.card-subtitle{font-size:.85em;color:#999;margin-top:2px;}
-
-/* ---- FORM ---- */
-.field{margin-bottom:18px;}
-.field label{
-  display:block;font-weight:700;font-size:.9em;color:var(--dark);margin-bottom:8px;
-}
-.field select,.field input,.field textarea{
-  width:100%;padding:14px 16px;border:2px solid #e8e8e8;border-radius:12px;
-  font-family:'Nunito',sans-serif;font-size:1em;color:var(--dark);
-  background:#fff;transition:border-color .3s;-webkit-appearance:none;appearance:none;
-}
-.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:44px;}
-.field select:focus,.field input:focus,.field textarea:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,107,157,.1);}
-.field textarea{min-height:130px;resize:vertical;line-height:1.8;}
-
 .pill-group{display:flex;flex-wrap:wrap;gap:10px;}
-.sala-pill{
-  padding:10px 16px;border:2px solid #e8e8e8;border-radius:50px;
-  font-family:'Nunito',sans-serif;font-weight:700;font-size:.85em;
-  cursor:pointer;transition:all .2s;background:#fff;color:#666;
-  display:flex;align-items:center;gap:6px;
-}
+.sala-pill{padding:10px 16px;border:2px solid #e8e8e8;border-radius:50px;font-weight:700;cursor:pointer;background:#fff;color:#666;transition:all .2s;}
 .sala-pill.selected{color:#fff;border-color:transparent;transform:scale(1.02);}
-.sala-pill:active{transform:scale(.97);}
 .sala-pill[data-sala="bercario"].selected{background:linear-gradient(135deg,#00bcd4,#0097a7);}
 .sala-pill[data-sala="maternal"].selected{background:linear-gradient(135deg,#ff6b9d,#e91e63);}
 .sala-pill[data-sala="jardim"].selected{background:linear-gradient(135deg,#ffd93d,#ff9800);}
 .sala-pill[data-sala="juniores"].selected{background:linear-gradient(135deg,#667eea,#3f51b5);}
 .sala-pill[data-sala="preadolescente"].selected{background:linear-gradient(135deg,#1D9E75,#00695c);}
-
-.mes-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.mes-pill{
-  padding:10px 5px;border:2px solid #e8e8e8;border-radius:10px;
-  font-family:'Nunito',sans-serif;font-weight:700;font-size:.8em;
-  cursor:pointer;transition:all .2s;background:#fff;color:#666;text-align:center;
-}
-.mes-pill.selected{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border-color:transparent;}
-.mes-pill:active{transform:scale(.97);}
-
-/* ---- INFO BOX ---- */
-.info-box{
-  padding:14px 16px;border-radius:12px;font-size:.88em;margin-bottom:16px;
-  display:flex;gap:10px;align-items:flex-start;
-}
-.info-box.azul{background:#e8f0fe;color:#3d5afe;}
-.info-box.verde{background:#e8f5e9;color:#2e7d32;}
-.info-box.laranja{background:#fff3e0;color:#e65100;}
-.info-box span{font-size:1.2em;flex-shrink:0;}
-
-/* ---- BTN GERAR ---- */
-.btn-gerar-wrap{margin-top:24px;}
-.btn-gerar{
-  width:100%;padding:18px;border:none;border-radius:16px;
-  background:linear-gradient(135deg,#ff6b9d 0%,#667eea 100%);
-  color:#fff;font-family:'Nunito',sans-serif;font-weight:900;
-  font-size:1.15em;cursor:pointer;transition:all .3s;letter-spacing:.5px;
-  box-shadow:0 6px 20px rgba(255,107,157,.4);
-}
-.btn-gerar:active{transform:scale(.97);box-shadow:0 3px 10px rgba(255,107,157,.3);}
-.btn-gerar:hover{box-shadow:0 8px 25px rgba(255,107,157,.5);}
-
-/* ---- RESULTADO ---- */
-.resultado-header{
-  text-align:center;padding:24px;border-radius:20px;margin-bottom:20px;color:#fff;
-  background:linear-gradient(135deg,var(--pink),var(--blue));
-}
-.resultado-header h2{font-size:1.4em;font-weight:900;margin-bottom:6px;}
-.resultado-header p{opacity:.9;font-size:.9em;}
-
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
-.stat-card{
-  background:#fff;border-radius:14px;padding:14px 10px;text-align:center;
-  box-shadow:0 3px 12px rgba(0,0,0,.06);
-}
-.stat-num{font-size:1.8em;font-weight:900;line-height:1;}
-.stat-label{font-size:.75em;color:#999;margin-top:4px;font-weight:600;}
-
-.escala-lista{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
-.escala-item{
-  background:#fff;border-radius:16px;padding:16px;
-  box-shadow:0 3px 12px rgba(0,0,0,.06);
-  display:flex;align-items:center;gap:14px;
-}
-.escala-item-data{
-  background:linear-gradient(135deg,var(--pink),var(--blue));
-  color:#fff;border-radius:12px;padding:10px;min-width:58px;
-  text-align:center;flex-shrink:0;
-}
-.escala-item-dia{font-size:1.6em;font-weight:900;line-height:1;}
-.escala-item-mes{font-size:.65em;font-weight:700;text-transform:uppercase;opacity:.9;}
-.escala-item-info{flex:1;}
-.escala-item-tipo{
-  font-size:.75em;font-weight:700;text-transform:uppercase;
-  color:#999;margin-bottom:6px;letter-spacing:.5px;
-}
-.prof-tag{
-  display:inline-block;padding:5px 12px;border-radius:20px;
-  font-size:.85em;font-weight:700;color:#fff;margin:3px 4px 3px 0;
-}
-
-.export-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.field{margin-bottom:24px;}
+.field label{display:block;font-weight:800;font-size:.95em;color:var(--dark);margin-bottom:10px;letter-spacing:0.3px;}
+.field input,.field textarea{width:100%;padding:16px 18px;border:2px solid #e8e8e8;border-radius:14px;font-size:1.05em;color:var(--dark);font-family:'Nunito',sans-serif;}
+.field input:focus,.field textarea:focus{outline:none;border-color:#ff6b9d;box-shadow:0 0 0 4px rgba(255,107,157,.15);}
+.field textarea{min-height:140px;resize:vertical;line-height:1.6;}
+.info-box{padding:14px 16px;border-radius:12px;background:#e8f5e9;color:#2e7d32;margin-bottom:16px;}
+.btn-gerar{width:100%;padding:22px;border:none;border-radius:18px;background:linear-gradient(135deg,#ff6b9d 0%,#667eea 100%);color:#fff;font-weight:900;font-size:1.2em;cursor:pointer;margin-top:28px;box-shadow:0 6px 20px rgba(255,107,157,.3);transition:all .3s;letter-spacing:0.5px;}
+.btn-gerar:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,107,157,.4);}
+.resultado-header{text-align:center;padding:32px 28px;border-radius:24px;margin-bottom:28px;color:#fff;background:linear-gradient(135deg,#ff6b9d 0%,#667eea 100%);box-shadow:0 8px 24px rgba(255,107,157,.25);}
+.resultado-header h2{font-size:1.8em;font-weight:900;margin-bottom:8px;letter-spacing:-0.5px;}
+.resultado-header p{font-size:1.15em;opacity:.95;margin-bottom:8px;}
+.resultado-header .mensagem{font-style:italic;margin-top:16px;font-size:1.05em;opacity:.9;}
+.escala-lista{display:flex;flex-direction:column;gap:12px;}
+.escala-item{background:#fff;border-radius:16px;padding:18px 20px;box-shadow:0 4px 16px rgba(0,0,0,.08);display:flex;gap:16px;align-items:center;border-left:4px solid #ff6b9d;transition:all .2s;}
+.escala-item-data{background:linear-gradient(135deg,#ff6b9d,#667eea);color:#fff;border-radius:12px;padding:10px;min-width:58px;text-align:center;}
+.escala-item-dia{font-size:1.6em;font-weight:900;}
+.prof-tag{display:inline-block;padding:8px 16px;border-radius:24px;font-size:.9em;font-weight:800;color:#fff;margin:6px 8px 6px 0;box-shadow:0 3px 10px rgba(0,0,0,.15);}
+.btn-export{padding:16px;border:none;border-radius:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;font-size:1em;transition:all .2s;}
+.btn-export:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.btn-pdf{background:#e74c3c;color:#fff;width:100%;margin-bottom:14px;}
+.btn-txt{background:#28a745;color:#fff;width:48%;display:inline-block;}
+.btn-copy{background:#007bff;color:#fff;width:48%;display:inline-block;float:right;}
+.btn-pdf{background:#dc3545;color:#fff;width:100%;display:block;margin-bottom:10px;}
+.export-row{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:10px;}
 .export-row.full{grid-template-columns:1fr;}
-.btn-export{
-  padding:14px;border:none;border-radius:12px;font-family:'Nunito',sans-serif;
-  font-weight:800;font-size:.9em;cursor:pointer;transition:all .2s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
-.btn-export:active{transform:scale(.97);}
-.btn-txt{background:#28a745;color:#fff;}
-.btn-copy{background:#007bff;color:#fff;}
-.btn-wpp{background:#25d366;color:#fff;}
-.btn-deslocar{background:linear-gradient(135deg,var(--green),var(--blue));color:#fff;font-size:1em;padding:16px;}
-
-/* ---- MINHAS ESCALAS ---- */
+@media(min-width:500px){.export-row{grid-template-columns:1fr 1fr;}}
+.escala-item-desenho{width:85px;height:85px;background:linear-gradient(135deg,#f0f4ff,#f5f7ff);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.08);}
+.stat-card{background:linear-gradient(135deg,#fff 0%,#f8f9fa 100%);border-radius:16px;padding:24px 16px;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.08);border:1px solid #f0f0f0;}
+.stat-num{font-size:2.6em;font-weight:900;background:linear-gradient(135deg,#ff6b9d,#667eea);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.stat-card div:last-child{font-size:1em;color:#666;font-weight:700;letter-spacing:0.3px;}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
+.tema-btn{padding:14px 12px;border:2px solid #e8e8e8;border-radius:14px;font-weight:700;cursor:pointer;background:#fff;text-align:center;margin:6px;transition:all .3s;font-size:1em;color:#666;}
+.tema-btn.selected{border-color:#ff6b9d;background:linear-gradient(135deg,#ff6b9d,#667eea);color:#fff;transform:scale(1.08);box-shadow:0 6px 16px rgba(255,107,157,.35);font-weight:800;}
+.tema-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-top:10px;}
 .escalas-vazio{text-align:center;padding:60px 20px;}
-.escalas-vazio .emoji{font-size:4em;margin-bottom:20px;}
-.escalas-vazio h3{color:#333;margin-bottom:10px;}
-.escalas-vazio p{color:#999;font-size:.9em;line-height:1.6;}
-
-.escala-card{
-  background:#fff;border-radius:20px;padding:20px;margin-bottom:16px;
-  box-shadow:0 4px 20px rgba(0,0,0,.06);overflow:hidden;position:relative;
-}
-.escala-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:5px;
-}
-.escala-card[data-sala="bercario"]::before{background:linear-gradient(90deg,#00bcd4,#0097a7);}
-.escala-card[data-sala="maternal"]::before{background:linear-gradient(90deg,#ff6b9d,#e91e63);}
-.escala-card[data-sala="jardim"]::before{background:linear-gradient(90deg,#ffd93d,#ff9800);}
-.escala-card[data-sala="juniores"]::before{background:linear-gradient(90deg,#667eea,#3f51b5);}
-.escala-card[data-sala="preadolescente"]::before{background:linear-gradient(90deg,#1D9E75,#00695c);}
-
-.escala-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
-.escala-card-title{font-size:1.1em;font-weight:800;color:var(--dark);}
-.escala-card-month{font-size:.85em;color:#999;margin-top:3px;font-weight:600;}
-.btn-del{
-  background:#ff6b6b;color:#fff;border:none;padding:6px 10px;border-radius:8px;
-  cursor:pointer;font-size:.8em;font-weight:700;
-}
-.escala-card-info{
-  background:#f8f9fa;border-radius:10px;padding:12px;font-size:.87em;color:#555;
-  line-height:1.7;margin-bottom:14px;
-}
-.card-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.btn-card{
-  padding:10px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;
-  font-weight:700;font-size:.85em;cursor:pointer;
-}
-.btn-ver{background:var(--pink);color:#fff;}
-.btn-exp{background:var(--green);color:#fff;}
-
-@media(max-width:360px){
-  .mes-grid{grid-template-columns:repeat(3,1fr);}
-  .stats-row{grid-template-columns:1fr 1fr;}
-}
+.escala-card{background:#fff;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;}
+.modal.active{display:flex;}
+.modal-content{background:#fff;border-radius:20px;padding:30px;width:90%;max-width:450px;box-shadow:0 20px 60px rgba(0,0,0,.3);}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="bubble"></div>
-  <div class="bubble"></div>
-  <div class="bubble"></div>
-  <div class="bubble"></div>
-  <img src="logo-ministerio.png" alt="MTC Kids" class="header-logo">
-  <h1>🎨 MTC Kids — Escala</h1>
-  <p>Gerador automático de escalas mensais</p>
+  <h1>🎨 MTC Kids — Escala Premium</h1>
+  <p>Gerador com desenhos, mensagens cristãs e PDF</p>
 </div>
 
-<svg class="wave" viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:40px;width:100%;display:block;margin-top:-1px;">
-  <path d="M0,30 C300,60 900,0 1200,30 L1200,60 L0,60 Z" fill="#f0f4ff"/>
-</svg>
-
 <div class="tab-nav">
-  <button class="tab-btn active" onclick="abrirAba('gerar',this)">✏️ Gerar Escala</button>
+  <button class="tab-btn active" onclick="abrirAba('gerar',this)">✏️ Gerar</button>
   <button class="tab-btn" onclick="abrirAba('resultado',this)">📋 Resultado</button>
   <button class="tab-btn" onclick="abrirAba('salvas',this)">📚 Salvas</button>
 </div>
 
-<!-- ====================== PÁGINA GERAR ====================== -->
 <div id="gerar" class="page active">
-
-  <!-- SALA -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon" style="background:linear-gradient(135deg,#ff6b9d,#667eea);">🏠</div>
-      <div><div class="card-title">Selecione a Sala</div><div class="card-subtitle">Toque na sala que você coordena</div></div>
+      <div><div class="card-title">Selecione a Sala</div></div>
     </div>
     <div class="pill-group">
       <button class="sala-pill" data-sala="bercario" onclick="selecionarSala(this)">🍼 Berçário</button>
@@ -289,254 +100,293 @@ body{
     <div id="infoSala" style="margin-top:14px;"></div>
   </div>
 
-  <!-- MÊS -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon" style="background:linear-gradient(135deg,#ffd93d,#ff8c42);">📆</div>
-      <div><div class="card-title">Selecione o Mês</div><div class="card-subtitle">Mês para gerar a escala</div></div>
+      <div><div class="card-title">Selecione o Mês</div></div>
     </div>
-    <div class="mes-grid">
-      <button class="mes-pill" data-mes="0" onclick="selecionarMes(this)">Jan</button>
-      <button class="mes-pill" data-mes="1" onclick="selecionarMes(this)">Fev</button>
-      <button class="mes-pill" data-mes="2" onclick="selecionarMes(this)">Mar</button>
-      <button class="mes-pill selected" data-mes="3" onclick="selecionarMes(this)">Abr</button>
-      <button class="mes-pill" data-mes="4" onclick="selecionarMes(this)">Mai</button>
-      <button class="mes-pill" data-mes="5" onclick="selecionarMes(this)">Jun</button>
-      <button class="mes-pill" data-mes="6" onclick="selecionarMes(this)">Jul</button>
-      <button class="mes-pill" data-mes="7" onclick="selecionarMes(this)">Ago</button>
-      <button class="mes-pill" data-mes="8" onclick="selecionarMes(this)">Set</button>
-      <button class="mes-pill" data-mes="9" onclick="selecionarMes(this)">Out</button>
-      <button class="mes-pill" data-mes="10" onclick="selecionarMes(this)">Nov</button>
-      <button class="mes-pill" data-mes="11" onclick="selecionarMes(this)">Dez</button>
+    <div class="tema-grid">
+      <button class="tema-btn" data-mes="0" onclick="selecionarMes(this)">Jan</button>
+      <button class="tema-btn" data-mes="1" onclick="selecionarMes(this)">Fev</button>
+      <button class="tema-btn" data-mes="2" onclick="selecionarMes(this)">Mar</button>
+      <button class="tema-btn selected" data-mes="3" onclick="selecionarMes(this)">Abr</button>
+      <button class="tema-btn" data-mes="4" onclick="selecionarMes(this)">Mai</button>
+      <button class="tema-btn" data-mes="5" onclick="selecionarMes(this)">Jun</button>
+      <button class="tema-btn" data-mes="6" onclick="selecionarMes(this)">Jul</button>
+      <button class="tema-btn" data-mes="7" onclick="selecionarMes(this)">Ago</button>
+      <button class="tema-btn" data-mes="8" onclick="selecionarMes(this)">Set</button>
+      <button class="tema-btn" data-mes="9" onclick="selecionarMes(this)">Out</button>
+      <button class="tema-btn" data-mes="10" onclick="selecionarMes(this)">Nov</button>
+      <button class="tema-btn" data-mes="11" onclick="selecionarMes(this)">Dez</button>
     </div>
   </div>
 
-  <!-- NOMES -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon" style="background:linear-gradient(135deg,#1D9E75,#00bcd4);">👥</div>
-      <div><div class="card-title">Profissionais</div><div class="card-subtitle">Um nome por linha</div></div>
+      <div><div class="card-title">Profissionais</div></div>
     </div>
     <div class="field">
       <label for="coordenador">👤 Seu Nome (Coordenador)</label>
-      <input type="text" id="coordenador" placeholder="Ex: Maria Silva" autocomplete="name">
+      <input type="text" id="coordenador" placeholder="Ex: Maria Silva">
     </div>
     <div class="field">
-      <label for="nomes">👥 Nomes dos Profissionais</label>
-      <textarea id="nomes" placeholder="Ana Sophia&#10;Alian&#10;Matheus&#10;Marcelo Sorriso&#10;Rui&#10;Daniel"></textarea>
+      <label for="nomes">👥 Profissionais — Formato: Nome | Idade</label>
+      <textarea id="nomes">Ana Sophia | 28
+Alian | 25
+Matheus | 32</textarea>
     </div>
-    <div id="nomesPreview" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
   </div>
 
-  <!-- BOTÃO -->
-  <div class="btn-gerar-wrap">
-    <button class="btn-gerar" onclick="gerarEscala()">🚀 GERAR ESCALA AGORA</button>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:linear-gradient(135deg,#ff6b9d,#ffd93d);">🎨</div>
+      <div><div class="card-title">Tema Visual</div></div>
+    </div>
+    <div class="tema-grid" id="temaGrid"></div>
   </div>
 
+  <button class="btn-gerar" onclick="gerarEscala()">🚀 GERAR ESCALA PREMIUM</button>
 </div>
 
-<!-- ====================== PÁGINA RESULTADO ====================== -->
 <div id="resultado" class="page">
-  <div id="resultadoVazio" class="escalas-vazio">
-    <div class="emoji">📅</div>
+  <div id="resultadoVazio" style="text-align:center;padding:60px 20px;">
+    <div style="font-size:4em;margin-bottom:20px;">📅</div>
     <h3>Nenhuma escala gerada</h3>
-    <p>Vá na aba <strong>Gerar Escala</strong>, preencha os dados e toque em <strong>Gerar Escala Agora</strong></p>
   </div>
   <div id="resultadoConteudo" style="display:none;">
     <div class="resultado-header" id="resultadoHeader"></div>
     <div class="stats-row" id="statsRow"></div>
     <div class="escala-lista" id="escalaLista"></div>
     <div class="card">
-      <div class="export-row">
-        <button class="btn-export btn-txt" onclick="exportarTxt()">💾 Salvar TXT</button>
-        <button class="btn-export btn-copy" onclick="copiarEscala()">📋 Copiar</button>
+      <div class="export-row full">
+        <button class="btn-export btn-pdf" onclick="gerarPDF()">📄 Baixar PDF Visual</button>
       </div>
       <div class="export-row">
-        <button class="btn-export btn-wpp" onclick="enviarWhatsApp()">📱 WhatsApp</button>
-        <button class="btn-export" style="background:#6c757d;color:#fff;" onclick="window.print()">🖨️ Imprimir</button>
+        <button class="btn-txt" onclick="exportarTxt()">💾 Salvar TXT</button>
+        <button class="btn-copy" onclick="copiarEscala()">📋 Copiar</button>
       </div>
-      <div class="export-row full" style="margin-top:4px;">
-        <button class="btn-export btn-deslocar" onclick="deslocarEscala()">➡️ Deslocar para Minhas Escalas</button>
-      </div>
+      <div style="clear:both;"></div>
+      <button class="btn-export" style="background:#25d366;color:#fff;" onclick="enviarWhatsApp()">📱 WhatsApp</button>
+      <button class="btn-export" style="background:#6c757d;color:#fff;" onclick="deslocarEscala()">➡️ Salvar em Minhas Escalas</button>
     </div>
   </div>
 </div>
 
-<!-- ====================== PÁGINA SALVAS ====================== -->
 <div id="salvas" class="page">
-  <div id="salvasVazio" class="escalas-vazio">
-    <div class="emoji">📭</div>
-    <h3>Nenhuma escala salva</h3>
-    <p>Gere uma escala e toque em <strong>Deslocar para Minhas Escalas</strong></p>
-  </div>
+  <div id="salvasVazio" style="text-align:center;padding:60px 20px;"><div style="font-size:4em;margin-bottom:20px;">📭</div><h3>Nenhuma escala salva</h3></div>
   <div id="salvasConteudo"></div>
-  <div id="btnLimparTodas" style="display:none;margin-top:10px;">
-    <button onclick="limparTodas()" style="width:100%;padding:14px;background:#ff6b6b;color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:800;font-size:1em;cursor:pointer;">🗑️ Limpar Todas</button>
-  </div>
 </div>
 
 <script>
-// ========== CONFIG ==========
-const CFG = {
-  bercario:{nome:'Berçário',icon:'🍼',faixa:'até 2 anos e 8 meses',qtd:2,dias:[0]},
-  maternal:{nome:'Maternal',icon:'👶',faixa:'3 e 4 anos',qtd:1,dias:[0]},
-  jardim:{nome:'Jardim',icon:'🌱',faixa:'5, 6 e 7 anos',qtd:1,dias:[0]},
-  juniores:{nome:'Juniores',icon:'🎯',faixa:'8, 9 e 10 anos',qtd:1,dias:[0,3]},
-  preadolescente:{nome:'Pré-adolescente',icon:'🎪',faixa:'11 e 12 anos',qtd:1,dias:[0]}
+const TEMAS = {
+  cristao: {nome:'✨ Cristão',icon:'⛪'},
+  anjo: {nome:'😇 Anjos',icon:'👼'},
+  luz: {nome:'💡 Luz',icon:'✨'},
+  coracao: {nome:'❤️ Corações',icon:'💖'},
+  natureza: {nome:'🌿 Natureza',icon:'🌱'},
+  nuvem: {nome:'☁️ Nuvens',icon:'🌤️'}
 };
+
+const MENSAGENS = {
+  cristao: ['✨ Que a graça permaneça com você.', '🙏 Confie no Senhor.', '❤️ O amor é tudo.'],
+  anjo: ['👼 Os anjos guardam os pequenos.', '✨ Presença divina.', '💫 Cada criança é um anjo.'],
+  luz: ['💡 Deixe sua luz brilhar.', '☀️ Você é a luz.', '✨ Fé ilumina.'],
+  coracao: ['❤️ Ame como Jesus.', '💖 Amor infinito.', '💕 Amor divino.'],
+  natureza: ['🌿 Reino de Deus.', '🌱 Criação divina.', '🌳 Crescimento.'],
+  nuvem: ['☁️ Entrega ao Senhor.', '🌤️ Esperança.', '⛅ Fé verdadeira.']
+};
+
+const CFG = {
+  bercario:{nome:'Berçário',qtd:2,dias:[0]},
+  maternal:{nome:'Maternal',qtd:1,dias:[0]},
+  jardim:{nome:'Jardim',qtd:1,dias:[0]},
+  juniores:{nome:'Juniores',qtd:1,dias:[0,3]},
+  preadolescente:{nome:'Pré-adolescente',qtd:1,dias:[0]}
+};
+
 const MESES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-const CORES={bercario:'#00bcd4',maternal:'#ff6b9d',jardim:'#ff9800',juniores:'#667eea',preadolescente:'#1D9E75'};
+
+const DESENHOS = [
+  (cor)=>`<svg viewBox="0 0 60 60"><circle cx="30" cy="16" r="8" fill="${cor}"/><path d="M30 24 L22 35 Q22 42 30 48 Q38 42 38 35 Z" fill="${cor}"/><circle cx="24" cy="30" r="2.5" fill="#fff"/><circle cx="36" cy="30" r="2.5" fill="#fff"/><path d="M28 36 Q30 37.5 32 36" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="30" cy="50" r="4" fill="${cor}" opacity="0.5"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><circle cx="30" cy="18" r="9" fill="${cor}"/><path d="M25 27 L30 35 L35 27 Z" fill="${cor}"/><path d="M20 30 Q30 43 20 50" stroke="${cor}" stroke-width="2.5" fill="none"/><path d="M40 30 Q30 43 40 50" stroke="${cor}" stroke-width="2.5" fill="none"/><circle cx="22" cy="20" r="5.5" fill="${cor}" opacity="0.6"/><circle cx="38" cy="20" r="5.5" fill="${cor}" opacity="0.6"/><circle cx="30" cy="18" r="2" fill="#fff"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><path d="M30 10 L38 28 L56 28 L41 40 L49 58 L30 46 L11 58 L19 40 L4 28 L22 28 Z" fill="${cor}"/><circle cx="30" cy="35" r="3" fill="#fff"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><path d="M30 8 L32 15 L40 15 L33 20 L35 28 L30 23 L25 28 L27 20 L20 15 L28 15 Z" fill="${cor}"/><path d="M24 32 L25.5 37 L31 34 L36.5 37 L35 32" fill="${cor}"/><circle cx="30" cy="46" r="10" fill="${cor}" opacity="0.6"/><path d="M28 42 L30 44 L32 42" stroke="#fff" stroke-width="1" fill="none"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><path d="M30 8 Q35 15 35 22 Q35 30 30 35 Q25 30 25 22 Q25 15 30 8" fill="${cor}"/><path d="M20 32 Q18 38 20 45 Q22 48 25 50" stroke="${cor}" stroke-width="2" fill="none"/><path d="M40 32 Q42 38 40 45 Q38 48 35 50" stroke="${cor}" stroke-width="2" fill="none"/><circle cx="30" cy="55" r="3" fill="${cor}"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><circle cx="30" cy="20" r="7" fill="${cor}"/><path d="M30 27 L25 38 Q25 48 30 52 Q35 48 35 38 Z" fill="${cor}"/><circle cx="26" cy="34" r="2" fill="#fff"/><circle cx="34" cy="34" r="2" fill="#fff"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><path d="M30 10 L33 22 L46 22 L36 30 L39 42 L30 34 L21 42 L24 30 L14 22 L27 22 Z" fill="${cor}"/><circle cx="20" cy="50" r="2" fill="${cor}"/><circle cx="30" cy="52" r="2" fill="${cor}"/><circle cx="40" cy="50" r="2" fill="${cor}"/><circle cx="25" cy="55" r="1.5" fill="${cor}"/><circle cx="35" cy="55" r="1.5" fill="${cor}"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><path d="M30 10 L35 24 L50 24 L38 33 L43 47 L30 38 L17 47 L22 33 L10 24 L25 24 Z" fill="${cor}"/><circle cx="30" cy="50" r="6" fill="${cor}" opacity="0.5"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><rect x="28" y="10" width="4" height="28" fill="${cor}"/><path d="M20 22 L30 18 L40 22" fill="${cor}"/><path d="M20 22 L30 18 L40 22 L30 26 Z" stroke="${cor}" stroke-width="1" fill="none"/><circle cx="30" cy="45" r="10" fill="${cor}" opacity="0.6"/><path d="M28 42 L30 45 L32 42" fill="#fff" opacity="0.7"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><circle cx="30" cy="15" r="7" fill="${cor}"/><path d="M30 22 L20 38 Q20 48 30 52 Q40 48 40 38 Z" fill="${cor}"/><circle cx="25" cy="32" r="2" fill="#fff" opacity="0.8"/><circle cx="35" cy="32" r="2" fill="#fff" opacity="0.8"/><path d="M27 40 Q30 42 33 40" stroke="#fff" stroke-width="1.5" fill="none" opacity="0.7"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><path d="M30 12 Q28 20 28 28 Q28 38 30 44 Q32 38 32 28 Q32 20 30 12" fill="${cor}"/><circle cx="20" cy="32" r="5" fill="${cor}" opacity="0.7"/><circle cx="40" cy="32" r="5" fill="${cor}" opacity="0.7"/><circle cx="30" cy="50" r="4" fill="${cor}" opacity="0.5"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><circle cx="30" cy="17" r="6" fill="${cor}"/><path d="M30 23 L24 32 Q24 42 30 48 Q36 42 36 32 Z" fill="${cor}"/><path d="M20 28 Q15 32 14 40" stroke="${cor}" stroke-width="2" fill="none"/><path d="M40 28 Q45 32 46 40" stroke="${cor}" stroke-width="2" fill="none"/><circle cx="27" cy="30" r="1.5" fill="#fff"/><circle cx="33" cy="30" r="1.5" fill="#fff"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><path d="M30 8 L35 22 L50 22 L37 32 L42 46 L30 36 L18 46 L23 32 L10 22 L25 22 Z" fill="${cor}"/><circle cx="18" cy="50" r="1.5" fill="${cor}"/><circle cx="30" cy="52" r="1.5" fill="${cor}"/><circle cx="42" cy="50" r="1.5" fill="${cor}"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><circle cx="30" cy="18" r="8" fill="${cor}"/><ellipse cx="30" cy="32" rx="9" ry="12" fill="${cor}"/><circle cx="23" cy="30" r="2" fill="#fff" opacity="0.8"/><circle cx="37" cy="30" r="2" fill="#fff" opacity="0.8"/><path d="M28 36 Q30 38 32 36" stroke="#fff" stroke-width="1.5" fill="none" opacity="0.8"/><path d="M30 44 L28 50 L32 50 Z" fill="${cor}" opacity="0.6"/></svg>`,
+  (cor)=>`<svg viewBox="0 0 60 60"><path d="M30 10 L33 20 L44 20 L35 26 L38 36 L30 30 L22 36 L25 26 L16 20 L27 20 Z" fill="${cor}"/><circle cx="30" cy="48" r="8" fill="${cor}" opacity="0.5"/><path d="M28 46 L30 49 L32 46" fill="#fff" opacity="0.6"/></svg>`
+];
+
+function getDesenho(idade) {
+  const idadeNum = parseInt(idade) || 25;
+  const cor = idadeNum < 10 ? '#ff6b9d' : '#667eea';
+  const desenhoFn = DESENHOS[Math.floor(Math.random() * DESENHOS.length)];
+  return desenhoFn(cor);
+}
 
 let salaSelecionada = null;
 let mesSelecionado = 3;
 let escalaAtual = null;
 let escalas = [];
+let temaSelecionado = 'cristao';
 
-try { escalas = JSON.parse(localStorage.getItem('mtcEscalas')) || []; } catch(e){ escalas=[]; }
+try { escalas = JSON.parse(localStorage.getItem('mtcEscalas')) || []; } catch(e){ }
 
-// ========== ABA ==========
+function renderTemas() {
+  let html = '';
+  for(let k in TEMAS) {
+    const t = TEMAS[k];
+    html += `<button class="tema-btn ${temaSelecionado===k?'selected':''}" onclick="selecionarTema('${k}',this)">${t.icon} ${t.nome}</button>`;
+  }
+  document.getElementById('temaGrid').innerHTML = html;
+}
+
+function selecionarTema(k, el) {
+  temaSelecionado = k;
+  document.querySelectorAll('#temaGrid .tema-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
 function abrirAba(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  if(btn) btn.classList.add('active');
-  if(id === 'salvas') renderSalvas();
+  btn.classList.add('active');
 }
 
-// ========== SALA ==========
 function selecionarSala(el) {
   document.querySelectorAll('.sala-pill').forEach(p => p.classList.remove('selected'));
   el.classList.add('selected');
   salaSelecionada = el.dataset.sala;
   const c = CFG[salaSelecionada];
-  const dias = c.dias.map(d => d===0?'Domingo':'Quarta-feira').join(' e ');
-  const tipo = c.qtd === 2 ? 'laranja' : 'verde';
-  const msg = c.qtd === 2
-    ? `⭐ Berçário funciona <strong>${dias}</strong> com <strong>2 profissionais</strong> por dia.`
-    : `Funciona toda <strong>${dias}</strong> com <strong>1 profissional</strong> por dia. Faixa: ${c.faixa}`;
-  document.getElementById('infoSala').innerHTML = `<div class="info-box ${tipo}"><span>ℹ️</span><div>${msg}</div></div>`;
+  const dias = c.dias.map(d => d===0?'Domingo':'Quarta-feira').join(' + ');
+  document.getElementById('infoSala').innerHTML = `<div class="info-box">✨ ${c.nome} — ${dias}</div>`;
 }
 
-// ========== MÊS ==========
 function selecionarMes(el) {
   document.querySelectorAll('.mes-pill').forEach(p => p.classList.remove('selected'));
   el.classList.add('selected');
   mesSelecionado = parseInt(el.dataset.mes);
 }
 
-// ========== PREVIEW NOMES ==========
-document.getElementById('nomes').addEventListener('input', function(){
-  const nomes = this.value.split('\n').map(n=>n.trim()).filter(n=>n);
-  const prev = document.getElementById('nomesPreview');
-  if(!nomes.length){ prev.innerHTML=''; return; }
-  prev.innerHTML = nomes.map(n=>`<span style="background:#f0f4ff;color:var(--blue);padding:4px 12px;border-radius:20px;font-size:.85em;font-weight:700;">${n}</span>`).join('');
-});
-
-// ========== GERAR ==========
 function gerarEscala() {
-  if(!salaSelecionada){ alerta('Selecione uma sala! 🏠'); return; }
-  
-  const nomesTexto = document.getElementById('nomes').value.trim();
-  if(!nomesTexto){ alerta('Digite os nomes dos profissionais! 👥'); return; }
-  
-  const nomes = nomesTexto.split('\n').map(n=>n.trim()).filter(n=>n);
-  if(!nomes.length){ alerta('Digite nomes válidos! ✍️'); return; }
-  
+  if(!salaSelecionada) return alerta('Selecione uma sala!');
+  const nomes = document.getElementById('nomes').value.trim().split('\n').filter(n=>n.trim());
+  if(!nomes.length) return alerta('Digite nomes!');
+
   const cfg = CFG[salaSelecionada];
-  if(cfg.qtd === 2 && nomes.length < 2){ alerta('Berçário precisa de pelo menos 2 profissionais! 👶'); return; }
-  
   const coordenador = document.getElementById('coordenador').value.trim();
   const ano = 2026;
   const ultimo = new Date(ano, mesSelecionado+1, 0).getDate();
   const escala = [];
-  let iDom = 0, iQua = 0;
-  
+  let iDom = 0;
+
   for(let d=1; d<=ultimo; d++){
     const dt = new Date(ano, mesSelecionado, d);
-    const ds = dt.getDay();
-    if(cfg.dias.includes(ds)){
-      const tipo = ds===0?'Domingo':'Quarta-feira';
+    if(cfg.dias.includes(dt.getDay())){
+      const tipo = dt.getDay()===0?'Domingo':'Quarta-feira';
       const profs = [];
-      const idx = ds===0 ? iDom : iQua;
       for(let i=0; i<cfg.qtd; i++){
-        profs.push(nomes[(idx+i) % nomes.length]);
+        const partes = nomes[(iDom+i)%nomes.length].split('|');
+        const idade = partes[1]?partes[1].trim():'25';
+        profs.push({nome:partes[0].trim(),idade:idade,desenho:getDesenho(idade)});
       }
-      if(ds===0) iDom += cfg.qtd; else iQua += cfg.qtd;
-      escala.push({ data: dt.toISOString(), profissionais: profs, tipo });
+      iDom += cfg.qtd;
+      escala.push({data:dt.toISOString(),profissionais:profs,tipo});
     }
   }
-  
-  if(!escala.length){ alerta('Nenhum dia encontrado para esta sala neste mês.'); return; }
-  
-  escalaAtual = { sala:salaSelecionada, mes:mesSelecionado, nomes, coordenador, cfg, escala, dataCriacao:new Date().toLocaleString('pt-BR') };
+
+  if(!escala.length) return alerta('Nenhum dia encontrado!');
+
+  escalaAtual = {sala:salaSelecionada,mes:mesSelecionado,nomes,coordenador,escala,tema:temaSelecionado,mensagem:MENSAGENS[temaSelecionado][Math.floor(Math.random()*3)]};
   renderResultado();
-  
-  // Ir para resultado
-  const btnResultado = document.querySelectorAll('.tab-btn')[1];
-  abrirAba('resultado', btnResultado);
-  window.scrollTo({top:0, behavior:'smooth'});
+  abrirAba('resultado',document.querySelectorAll('.tab-btn')[1]);
 }
 
-// ========== RENDERIZAR RESULTADO ==========
 function renderResultado() {
-  if(!escalaAtual){ return; }
-  const {sala, mes, nomes, coordenador, cfg, escala} = escalaAtual;
-  
+  if(!escalaAtual) return;
+  const {sala,mes,escala,tema,mensagem} = escalaAtual;
   document.getElementById('resultadoVazio').style.display = 'none';
   document.getElementById('resultadoConteudo').style.display = 'block';
-  
-  // Header
-  const dias = cfg.dias.map(d=>d===0?'Domingo':'Quarta').join(' + ');
-  document.getElementById('resultadoHeader').innerHTML = `
-    <div style="font-size:2.5em;margin-bottom:8px;">${cfg.icon}</div>
-    <h2>${cfg.nome}</h2>
-    <p>${cfg.faixa} · ${MESES[mes]} 2026 · ${dias}</p>
-    ${coordenador ? `<p style="margin-top:6px;opacity:.8;">👤 ${coordenador}</p>` : ''}
-  `;
-  
-  // Stats
-  const domingos = escala.filter(e=>e.tipo==='Domingo').length;
-  const quartas = escala.filter(e=>e.tipo==='Quarta-feira').length;
-  document.getElementById('statsRow').innerHTML = `
-    <div class="stat-card"><div class="stat-num" style="color:var(--pink);">${escala.length}</div><div class="stat-label">Total de Dias</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:var(--orange);">${domingos}</div><div class="stat-label">Domingos</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:var(--blue);">${quartas || nomes.length}</div><div class="stat-label">${quartas ? 'Quartas' : 'Profissionais'}</div></div>
-  `;
-  
-  // Lista
-  const cor = CORES[sala];
+
+  document.getElementById('resultadoHeader').innerHTML = `<h2>${CFG[sala].nome}</h2><p>${MESES[mes]} 2026</p><div class="mensagem">${mensagem}</div>`;
+  document.getElementById('statsRow').innerHTML = `<div class="stat-card"><div class="stat-num">${escala.length}</div><div>Total de Dias</div></div><div class="stat-card"><div class="stat-num">${escala.filter(e=>e.tipo==='Domingo').length}</div><div>Domingos</div></div><div class="stat-card"><div class="stat-num">${escalaAtual.nomes.length}</div><div>Profissionais</div></div>`;
+
   let html = '';
-  escala.forEach(item => {
-    const dt = new Date(item.data);
+  escala.forEach(e => {
+    const dt = new Date(e.data);
     const dd = String(dt.getDate()).padStart(2,'0');
     const mm = MESES[dt.getMonth()].substring(0,3);
-    html += `
-      <div class="escala-item">
-        <div class="escala-item-data" style="background:linear-gradient(135deg,${cor},${cor}cc);">
-          <div class="escala-item-dia">${dd}</div>
-          <div class="escala-item-mes">${mm}</div>
-        </div>
-        <div class="escala-item-info">
-          <div class="escala-item-tipo">${item.tipo}</div>
-          ${item.profissionais.map(p=>`<span class="prof-tag" style="background:${cor};">${p}</span>`).join('')}
-        </div>
-      </div>
-    `;
+    let desenhos = '';
+    e.profissionais.forEach(p => {
+      desenhos += `<div class="escala-item-desenho">${p.desenho}</div>`;
+    });
+    html += `<div class="escala-item"><div class="escala-item-data"><div class="escala-item-dia">${dd}</div><div>${mm}</div></div><div style="flex:1;"><div>${e.tipo}</div>${e.profissionais.map(p=>`<span class="prof-tag" style="background:#ff6b9d;">${p.nome} (${p.idade})</span>`).join('')}</div><div style="display:flex;gap:8px;flex-shrink:0;">${desenhos}</div></div>`;
   });
   document.getElementById('escalaLista').innerHTML = html;
 }
 
-// ========== EXPORTAR TXT ==========
+function gerarPDF() {
+  if(!escalaAtual) return;
+  const {sala,mes,escala,nomes,mensagem,coordenador} = escalaAtual;
+  const nomesUnicos = [];
+  escala.forEach(e => {
+    e.profissionais.forEach(p => {
+      const chave = `${p.nome}|${p.idade}`;
+      if(!nomesUnicos.find(n => `${n.nome}|${n.idade}` === chave)) {
+        nomesUnicos.push(p);
+      }
+    });
+  });
+  const nomesFormatados = nomesUnicos.map(n=>`${n.nome} (${n.idade})`).join(', ');
+  const html = `<div style="padding:40px;font-family:Arial,sans-serif;background:#fff;">
+    <h1 style="color:#667eea;text-align:center;">${CFG[sala].nome}</h1>
+    <p style="text-align:center;color:#666;">${MESES[mes]} 2026</p>
+    <p style="text-align:center;color:#667eea;font-style:italic;font-size:14px;">${mensagem}</p>
+    ${coordenador ? `<p style="text-align:center;color:#666;">👤 Coordenador: <strong>${coordenador}</strong></p>` : ''}
+    <hr style="border:none;border-top:2px solid #667eea;margin:20px 0;">
+    <h3>Profissionais</h3>
+    <p>${nomesFormatados}</p>
+    <h3>Escala Mensal</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;">
+      <tr style="background:#667eea;color:#fff;">
+        <th style="border:1px solid #ddd;padding:10px;text-align:left;">Data</th>
+        <th style="border:1px solid #ddd;padding:10px;text-align:left;">Dia</th>
+        <th style="border:1px solid #ddd;padding:10px;text-align:left;">Profissionais</th>
+      </tr>
+      ${escala.map((e,i)=>{
+        const dt=new Date(e.data);
+        const bg = i%2===0 ? '#f8f9fa' : '#fff';
+        return `<tr style="background:${bg};">
+          <td style="border:1px solid #ddd;padding:10px;">${dt.toLocaleDateString('pt-BR')}</td>
+          <td style="border:1px solid #ddd;padding:10px;font-weight:bold;">${e.tipo}</td>
+          <td style="border:1px solid #ddd;padding:10px;">${e.profissionais.map(p=>`${p.nome} (${p.idade})`).join(' + ')}</td>
+        </tr>`;
+      }).join('')}
+    </table>
+    <p style="text-align:center;margin-top:30px;color:#999;font-size:10px;">Gerado em ${new Date().toLocaleString('pt-BR')}</p>
+  </div>`;
+  const opt = {margin:8,filename:`escala_${sala}_${MESES[mes]}.pdf`,image:{type:'jpeg',quality:.98},html2canvas:{scale:2},jsPDF:{orientation:'portrait',unit:'mm',format:'a4'}};
+  html2pdf().set(opt).from(html).save();
+  alerta('📄 PDF gerado com sucesso!');
+}
+
 function exportarTxt() {
   if(!escalaAtual) return;
-  const {sala, mes, nomes, coordenador, cfg, escala} = escalaAtual;
-  let txt = `MTC KIDS - ESCALA MENSAL\n${cfg.icon} ${cfg.nome} (${cfg.faixa})\n${MESES[mes]} 2026\n${'='.repeat(50)}\n`;
-  if(coordenador) txt += `Coordenador: ${coordenador}\n`;
-  txt += `Profissionais: ${nomes.join(', ')}\n${'='.repeat(50)}\n\n`;
+  const {sala,mes,escala,nomes,mensagem} = escalaAtual;
+  let txt = `MTC KIDS - ESCALA MENSAL\n${CFG[sala].nome}\n${MESES[mes]} 2026\n${mensagem}\n${'='.repeat(50)}\nProfissionais: ${nomes.join(', ')}\n${'='.repeat(50)}\n\n`;
   escala.forEach(e => {
     const dt = new Date(e.data);
-    txt += `${e.tipo} - ${dt.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'})}\n`;
-    e.profissionais.forEach(p => txt += `  ✓ ${p}\n`);
+    txt += `${e.tipo} - ${dt.toLocaleDateString('pt-BR')}\n`;
+    e.profissionais.forEach(p => txt += `  ✓ ${p.nome} (${p.idade})\n`);
     txt += '\n';
   });
   const a = document.createElement('a');
@@ -545,109 +395,39 @@ function exportarTxt() {
   a.click();
 }
 
-// ========== COPIAR ==========
 function copiarEscala() {
   if(!escalaAtual) return;
-  const {cfg, mes, escala, nomes} = escalaAtual;
-  let txt = `${cfg.icon} *${cfg.nome} - ${MESES[mes]} 2026*\n👥 ${nomes.join(', ')}\n\n`;
+  const {sala,mes,escala,nomes} = escalaAtual;
+  let txt = `${CFG[sala].nome} - ${MESES[mes]} 2026\n👥 ${nomes.join(', ')}\n\n`;
   escala.forEach(e => {
     const dt = new Date(e.data);
-    txt += `📅 *${e.tipo}* (${dt.toLocaleDateString('pt-BR')})\n→ ${e.profissionais.join(' + ')}\n\n`;
+    txt += `📅 ${e.tipo} (${dt.toLocaleDateString('pt-BR')})\n${e.profissionais.map(p=>`${p.nome} (${p.idade})`).join(' + ')}\n\n`;
   });
-  if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(()=>alerta('✅ Copiado!')); }
-  else{ const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alerta('✅ Copiado!'); }
+  navigator.clipboard.writeText(txt).then(()=>alerta('✅ Copiado!'));
 }
 
-// ========== WHATSAPP ==========
 function enviarWhatsApp() {
   if(!escalaAtual) return;
-  const {cfg, mes, escala, nomes} = escalaAtual;
-  let txt = `${cfg.icon} *${cfg.nome} - ${MESES[mes]} 2026*\n👥 ${nomes.join(', ')}\n\n`;
-  escala.forEach(e => {
-    const dt = new Date(e.data);
-    txt += `📅 *${e.tipo}* (${dt.toLocaleDateString('pt-BR')}): ${e.profissionais.join(' + ')}\n`;
-  });
-  window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+  copiarEscala();
+  setTimeout(()=>window.open('https://wa.me','_blank'),500);
 }
 
-// ========== DESLOCAR ==========
 function deslocarEscala() {
-  if(!escalaAtual){ alerta('Nenhuma escala gerada!'); return; }
+  if(!escalaAtual) return;
   escalas.push({...escalaAtual, id: Date.now()});
   localStorage.setItem('mtcEscalas', JSON.stringify(escalas));
-  alerta('✅ Deslocada para Minhas Escalas!');
-  setTimeout(()=>{ const btn=document.querySelectorAll('.tab-btn')[2]; abrirAba('salvas',btn); window.scrollTo({top:0,behavior:'smooth'}); }, 800);
+  alerta('✅ Salva em Minhas Escalas!');
 }
 
-// ========== RENDER SALVAS ==========
-function renderSalvas() {
-  const container = document.getElementById('salvasConteudo');
-  const vazio = document.getElementById('salvasVazio');
-  const btnLimpar = document.getElementById('btnLimparTodas');
-  
-  if(!escalas.length){ vazio.style.display='block'; container.innerHTML=''; btnLimpar.style.display='none'; return; }
-  
-  vazio.style.display = 'none';
-  btnLimpar.style.display = 'block';
-  
-  container.innerHTML = escalas.slice().reverse().map(e => `
-    <div class="escala-card" data-sala="${e.sala}">
-      <div class="escala-card-header">
-        <div>
-          <div class="escala-card-title">${e.cfg.icon} ${e.cfg.nome}</div>
-          <div class="escala-card-month">${MESES[e.mes]} 2026 · ${e.escala.length} dias</div>
-        </div>
-        <button class="btn-del" onclick="removerEscala(${e.id})">✕</button>
-      </div>
-      <div class="escala-card-info">
-        <strong>👥</strong> ${e.nomes.join(', ')}<br>
-        ${e.coordenador ? `<strong>👤</strong> ${e.coordenador}<br>` : ''}
-        <strong>📅</strong> ${e.cfg.dias.map(d=>d===0?'Domingo':'Quarta').join(' + ')}<br>
-        <span style="color:#bbb;font-size:.82em;">Salvo em ${e.dataCriacao}</span>
-      </div>
-      <div class="card-btns">
-        <button class="btn-card btn-ver" onclick="abrirEscalaSalva(${e.id})">👁️ Visualizar</button>
-        <button class="btn-card btn-exp" onclick="exportarSalva(${e.id})">💾 Exportar</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function removerEscala(id) {
-  if(!confirm('Remover esta escala?')) return;
-  escalas = escalas.filter(e=>e.id!==id);
-  localStorage.setItem('mtcEscalas',JSON.stringify(escalas));
-  renderSalvas();
-}
-
-function limparTodas() {
-  if(!confirm('Deletar TODAS as escalas salvas?')) return;
-  escalas = [];
-  localStorage.setItem('mtcEscalas',JSON.stringify(escalas));
-  renderSalvas();
-}
-
-function abrirEscalaSalva(id) {
-  escalaAtual = escalas.find(e=>e.id===id);
-  renderResultado();
-  const btn = document.querySelectorAll('.tab-btn')[1];
-  abrirAba('resultado',btn);
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function exportarSalva(id) {
-  escalaAtual = escalas.find(e=>e.id===id);
-  exportarTxt();
-}
-
-// ========== ALERTA ==========
 function alerta(msg) {
   const div = document.createElement('div');
-  div.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2c3e50;color:#fff;padding:14px 24px;border-radius:30px;font-family:Nunito,sans-serif;font-weight:700;font-size:.95em;z-index:9999;box-shadow:0 6px 20px rgba(0,0,0,.2);white-space:nowrap;';
+  div.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2c3e50;color:#fff;padding:14px 24px;border-radius:30px;font-weight:700;z-index:9999;';
   div.textContent = msg;
   document.body.appendChild(div);
-  setTimeout(()=>{ div.style.opacity='0'; div.style.transition='opacity .4s'; setTimeout(()=>div.remove(),400); }, 2500);
+  setTimeout(()=>div.remove(), 2500);
 }
+
+renderTemas();
 </script>
 </body>
 </html>
