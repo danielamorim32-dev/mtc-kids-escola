@@ -91,6 +91,10 @@ body{font-family:'Nunito',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-s
 .toast{background:#2c3e50;color:#fff;padding:14px 24px;border-radius:30px;font-weight:700;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.2);}
 @media(max-width:480px){.escala-item{flex-wrap:wrap}.escala-item-desenho{width:64px;height:64px}.stats-row{gap:8px}.stat-num{font-size:2em}.card{padding:20px}}
 /* ===== Resultado premium (identidade MTC Kids) ===== */
+.fundo-kids{position:absolute;top:0;left:0;right:0;bottom:0;z-index:0;pointer-events:none;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,#eefaff 0%,#fffdf3 100%);}
+.fundo-kids svg{display:block;width:100%;height:100%;}
+.escala-folha>.resultado-header,.escala-folha>.stats-row,.escala-folha>.escala-lista{position:relative;z-index:1;}
+.escala-folha>.escala-lista{padding:4px 0 8px;}
 :root{--fonte-kids:'Baloo 2','Fredoka One','Fredoka','Arial Rounded MT Bold','Varela Round','Nunito',system-ui,sans-serif;}
 .escala-folha{position:relative;--tema1:#667eea;--tema2:#3f51b5;}
 .marca-dagua{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:3;overflow:hidden;border-radius:24px;}
@@ -156,6 +160,13 @@ body{font-family:'Nunito',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-s
   .pr-logo{width:70px;height:70px;border-radius:14px;object-fit:cover;}
   .pr-faixa{height:6px;border-radius:3px;background:linear-gradient(90deg,#FFD93D,#FF8C42,#3BA9F5,#7ED957,#FF4FA0);margin:12px 0;}
   .pr-tabela tr.qua td:first-child{border-left:4px solid #FF8C42;}
+  .pr-fundo{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+  .pr{position:relative;z-index:1;}
+  .pr-tabela th{border-color:#fff;}
+  .pr-tabela td{background:rgba(255,255,255,.9);}
+  .pr-tabela tbody tr:nth-child(odd){background:rgba(255,255,255,.9);}
+  .pr-tabela tr.dom td:nth-child(2){color:#2f7fd1;}
+  .pr-tabela tr.qua td:nth-child(2){color:#e06a1f;}
   .pr-rodape{text-align:center;margin-top:30px;color:#999;font-size:10px;}
 }
 </style>
@@ -248,6 +259,7 @@ Matheus | 32</textarea>
   </div>
   <div id="resultadoConteudo" style="display:none;">
     <div class="escala-folha" id="escalaFolha">
+      <div class="fundo-kids" id="fundoKids" aria-hidden="true"></div>
       <div class="marca-dagua" id="marcaDagua" aria-hidden="true"></div>
       <div class="resultado-header" id="resultadoHeader"></div>
       <div class="stats-row" id="statsRow"></div>
@@ -413,6 +425,34 @@ function fmtData(s){ const d=lerData(s); return d?d.toLocaleDateString('pt-BR'):
 function fmtDataHora(s){ const d=new Date(s); return isNaN(d.getTime())?'':d.toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}); }
 // Remove numeração colada antes do nome (ex.: "1. Ana", "02 - Ana", "3) Ana") e espaços extras
 function limparNome(s){ return String(s==null?'':s).replace(/[\u0000-\u001f]/g,'').replace(/\s+/g,' ').trim().replace(/^[\d\s.,;:)\]ºª°#\-–—]+(?=\p{L})/u,'').trim(); }
+// Fundo ilustrado gerado automaticamente em SVG (bolinhas + pegadas, sóis e folhas estilo safári).
+// Sem imagens externas: é um padrão repetido, com posições fixas (sempre o mesmo desenho).
+function svgFundo(id,opac){
+  let semente=20260; const rnd=()=>{semente=(semente*16807)%2147483647; return semente/2147483647;};
+  const T=360, cores=CORES_KIDS, TERRA='#b9793b', SOL='#f5b700', FOLHA='#5fae3f';
+  const f=n=>n.toFixed(1);
+  let g='';
+  for(let i=0;i<34;i++){ // bolinhas com brilho
+    const x=rnd()*T, y=rnd()*T, r=5+rnd()*16, c=cores[i%cores.length];
+    g+=`<circle cx="${f(x)}" cy="${f(y)}" r="${f(r)}" fill="${c}" fill-opacity="${opac}"/>`
+      +`<circle cx="${f(x-r*0.35)}" cy="${f(y-r*0.35)}" r="${f(r*0.22)}" fill="#fff" fill-opacity="${Math.min(0.9,opac*2.4).toFixed(2)}"/>`;
+  }
+  for(let i=0;i<7;i++){ // pegadas de animal
+    const x=rnd()*T, y=rnd()*T, a=rnd()*360, sc=0.8+rnd()*0.4;
+    g+=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(a)}) scale(${sc.toFixed(2)})" fill="${TERRA}" fill-opacity="${Math.min(1,opac*1.4).toFixed(2)}">`
+      +`<ellipse cx="0" cy="8" rx="8" ry="6.5"/><circle cx="-9" cy="-4" r="3.2"/><circle cx="-3" cy="-9" r="3.2"/><circle cx="3.5" cy="-9" r="3.2"/><circle cx="9" cy="-4" r="3.2"/></g>`;
+  }
+  for(let i=0;i<3;i++){ // sóis com raios
+    const x=rnd()*T, y=rnd()*T, sc=0.9+rnd()*0.5;
+    let raios=''; for(let k=0;k<8;k++) raios+=`<rect x="-1.6" y="-16" width="3.2" height="5.5" rx="1.6" transform="rotate(${k*45})"/>`;
+    g+=`<g transform="translate(${f(x)} ${f(y)}) scale(${sc.toFixed(2)})" fill="${SOL}" fill-opacity="${Math.min(1,opac*1.6).toFixed(2)}"><circle r="9"/>${raios}</g>`;
+  }
+  for(let i=0;i<5;i++){ // folhas
+    const x=rnd()*T, y=rnd()*T, a=rnd()*360;
+    g+=`<path d="M0,0 C8,-10 8,-22 0,-30 C-8,-22 -8,-10 0,0Z" transform="translate(${f(x)} ${f(y)}) rotate(${f(a)})" fill="${FOLHA}" fill-opacity="${Math.min(1,opac*1.4).toFixed(2)}"/>`;
+  }
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" aria-hidden="true"><defs><pattern id="${id}" width="${T}" height="${T}" patternUnits="userSpaceOnUse">${g}</pattern></defs><rect width="100%" height="100%" fill="url(#${id})"/></svg>`;
+}
 function svgMarca(id,cor,op){
   const t=(x,y)=>`<text x="${x}" y="${y}" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="30" fill="${cor}" fill-opacity="${op}">${esc(MARCA_TEXTO)}</text>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" aria-hidden="true"><defs><pattern id="${id}" width="400" height="200" patternUnits="userSpaceOnUse" patternTransform="rotate(-28)">${t(15,60)}${t(215,160)}</pattern></defs><rect width="100%" height="100%" fill="url(#${id})"/></svg>`;
@@ -654,6 +694,7 @@ function renderResultado(){
   $('resultadoVazio').style.display='none';
   $('resultadoConteudo').style.display='block';
   $('escalaFolha').setAttribute('style',`--tema1:${pal[0]};--tema2:${pal[1]};`);
+  $('fundoKids').innerHTML=svgFundo('fdTela',0.20);
   $('marcaDagua').innerHTML=svgMarca('pmTela',pal[0],0.07);
   $('resultadoHeader').innerHTML=`<div class="rh-topo"><img class="rh-logo" src="${LOGO_MTC}" alt="MTC Kids"><div class="rh-titulos"><div class="rh-kicker">Escala do mês · MTC Kids</div><h2>${letrasColoridas(cfg.nome)}</h2><p class="rh-periodo">${MESES[e.mes]} ${e.ano}</p></div><div class="rh-mascotes"><img src="${MASCOTE_KAKO}" alt="Kako"><img src="${MASCOTE_KAKA}" alt="Kaka"></div></div>
 <div class="rh-chips"><span class="rh-chip">⛪ ${esc(cfg.dias.map(d=>DIAS_NOME[d]).join(' + '))}</span><span class="rh-chip">👥 ${cfg.qtd} por dia</span><span class="rh-chip">${esc(TEMAS[e.tema].nome)}</span>${e.coordenador?`<span class="rh-chip">👤 Coordenador: ${esc(e.coordenador)}</span>`:''}</div>
@@ -671,7 +712,7 @@ function renderResultado(){
 // ===== PDF (impressão do navegador → "Salvar como PDF"; funciona offline e sem biblioteca) =====
 function htmlImpressao(e){
   const cfg=CFG[e.sala], pal=PALETAS[e.tema]||PALETAS.cristao;
-  return `${svgMarca('pmPrint',pal[0],0.08).replace('<svg ','<svg class="pr-marca" ')}<div class="pr"><div class="pr-topo"><img class="pr-logo" src="${LOGO_MTC}" alt=""><div><h1 style="color:${pal[0]}">${esc(cfg.nome)}</h1><p class="pr-centro">${MESES[e.mes]} ${e.ano}</p></div></div><p class="pr-msg" style="color:${pal[0]}">${esc(e.mensagem)}</p>${e.coordenador?`<p class="pr-centro">👤 Coordenador: <strong>${esc(e.coordenador)}</strong></p>`:''}<div class="pr-faixa"></div>
+  return `${svgFundo('fdPrint',0.16).replace('<svg ','<svg class="pr-fundo" ')}${svgMarca('pmPrint',pal[0],0.08).replace('<svg ','<svg class="pr-marca" ')}<div class="pr"><div class="pr-topo"><img class="pr-logo" src="${LOGO_MTC}" alt=""><div><h1 style="color:${pal[0]}">${esc(cfg.nome)}</h1><p class="pr-centro">${MESES[e.mes]} ${e.ano}</p></div></div><p class="pr-msg" style="color:${pal[0]}">${esc(e.mensagem)}</p>${e.coordenador?`<p class="pr-centro">👤 Coordenador: <strong>${esc(e.coordenador)}</strong></p>`:''}<div class="pr-faixa"></div>
 <h3>Profissionais</h3><p>${esc(e.profissionais.map(rotuloProf).join(', '))}</p>
 <h3>Escala Mensal</h3><table class="pr-tabela"><thead><tr><th style="background:${pal[0]}">Data</th><th style="background:${pal[0]}">Dia</th><th style="background:${pal[0]}">Profissionais</th></tr></thead><tbody>${e.escala.map(d=>`<tr class="${d.tipo==='Domingo'?'dom':'qua'}"><td>${fmtData(d.data)}</td><td><b>${esc(d.tipo)}</b></td><td>${esc(d.profissionais.map(rotuloProf).join(' + '))}</td></tr>`).join('')}</tbody></table>
 <p class="pr-rodape">MTC Kids · Gerado em ${new Date().toLocaleString('pt-BR')}</p></div>`;
